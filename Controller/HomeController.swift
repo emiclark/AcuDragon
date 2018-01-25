@@ -30,7 +30,23 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationItem.titleView = navTitleLabel
         collectionView?.backgroundColor = UIColor.white
         
+        // add search to navbar
+        let searchIcon = UIImage(named:"searchIcon")?.withRenderingMode(.alwaysOriginal)
+        let searchBarButtonItem = UIBarButtonItem(image: searchIcon, style: .plain, target: self, action: #selector(handleSearch))
+        
+        // add more to navbar
+        let moreIcon = UIImage(named:"moreIcon")?.withRenderingMode(.alwaysOriginal)
+        let moreBarButtonItem = UIBarButtonItem(image: moreIcon, style: .plain, target: self, action: #selector(handleMore))
+        navigationItem.rightBarButtonItems = [ moreBarButtonItem, searchBarButtonItem ]
         setupMenuBar()
+    }
+    
+    @objc func handleSearch() {
+        print("123")
+    }
+    
+    @objc func handleMore() {
+        print("234")
     }
     
     let menuBar: MenuBar = {
@@ -42,9 +58,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         view.addSubview(menuBar)
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: menuBar)
         view.addConstraintsWithFormat(format: "V:|[v0(50)]", views: menuBar)
-        
-        
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

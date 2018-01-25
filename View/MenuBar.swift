@@ -8,6 +8,19 @@
 
 import UIKit
 
+class BaseCell : UICollectionViewCell {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    func setupViews() {    
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     lazy var collectionview : UICollectionView = {
@@ -55,7 +68,8 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionview.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MenuCell
-        cell.menuImageView.image = UIImage(named: menuImages[indexPath.row])
+        cell.menuImageView.image = UIImage(named: menuImages[indexPath.row])?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        cell.tintColor = UIColor.rgb(red: 91, green: 13, blue: 14)
         return cell
     }
     
@@ -64,14 +78,11 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
     }
 }
 
-class MenuCell : UICollectionViewCell {
+class MenuCell : BaseCell {
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupMenuCell()
-    }
-
-    func setupMenuCell() {
+    override func setupViews() {
+        super.setupViews()
+        
         addSubview(menuImageView)
         menuImageView.addConstraintsWithFormat(format: "H:[v0(40)]", views: menuImageView)
         menuImageView.addConstraintsWithFormat(format: "V:[v0(40)]", views: menuImageView)
@@ -100,9 +111,7 @@ class MenuCell : UICollectionViewCell {
         return iv
     }()
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
 }
 
 

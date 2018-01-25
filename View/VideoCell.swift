@@ -8,11 +8,7 @@
 
 import UIKit
 
-class VideoCell: UICollectionViewCell {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
+class VideoCell: BaseCell {
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -55,7 +51,7 @@ class VideoCell: UICollectionViewCell {
         return imageView
     }()
     
-    func setupViews() {
+    override func setupViews() {
         backgroundColor = UIColor.white
         addSubview(thumbnailImageView)
         addSubview(separaterView)
@@ -80,9 +76,5 @@ class VideoCell: UICollectionViewCell {
         addConstraint(NSLayoutConstraint(item: subTitleTextView, attribute: .left , relatedBy: .equal, toItem: profileImageView, attribute: .right, multiplier: 1, constant: 8))
         addConstraint(NSLayoutConstraint(item: subTitleTextView, attribute: .right , relatedBy: .equal, toItem: thumbnailImageView, attribute: .right, multiplier: 1, constant: 0))
         addConstraint(NSLayoutConstraint(item: subTitleTextView , attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
