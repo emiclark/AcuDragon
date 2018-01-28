@@ -21,6 +21,7 @@ class BaseCell : UICollectionViewCell {
     }
 }
 
+
 class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     lazy var collectionview : UICollectionView = {
@@ -34,7 +35,7 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
     
     let cellId = "cellId"
     let menuImages = ["home","trending","subscriptions","account"]
-    let menuTitle = ["Home","Two","Three","Four"]
+    let menuTitle = ["Home","Trending","Subscription","Account"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)

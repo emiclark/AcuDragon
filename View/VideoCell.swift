@@ -10,27 +10,64 @@ import UIKit
 
 class VideoCell: BaseCell {
     
-    let profileImageView: UIImageView = {
+    var video: Video? {
+        didSet {
+
+            if let thumbnail_image_name = video?.thumbnail_image_name {
+                downloadImage(imageType: "thumbnail_image_name", urlString: thumbnail_image_name)
+            }
+
+            if let profile_image_name  = video?.channel?.profile_image_name {
+                downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
+            }
+
+            titleLabel.text = video?.title
+
+            if let channelSubtitle = video?.subTitle, ((video?.channel?.name) != nil) {
+                let subtitleText = "\(String(describing: (video?.channel?.name)!)) - \(channelSubtitle)"
+                subTitleTextView.text = subtitleText
+            }
+
+            // estimate height for titleLabelText
+            if let title = video?.title {
+                let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
+                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+                let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
+
+                if estimatedRect.size.height > 21 {
+                    titleLabelHeightConstraint?.constant = 44
+                } else {
+                    titleLabelHeightConstraint?.constant = 21
+                }
+                print("estimatedRect:", estimatedRect)
+            }
+
+            // estimate height for subTitle
+
+            // estimate height for VideoCell (video+16+titleLabelHeight+8+subTitleLabelHeight+16)
+        }
+    }
+    
+    var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.green
-        imageView.image = UIImage(named: "dragon.png")
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = #imageLiteral(resourceName: "dragon")
         return imageView
     }()
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "AcuDragon: Meditation - Awareness"
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.sizeToFit()
         return label
     }()
     
     let subTitleTextView: UITextView = {
         let textview = UITextView()
-        //        textview.backgroundColor = UIColor.red
         textview.translatesAutoresizingMaskIntoConstraints = false
-        textview.text = "Meditation focusing on Awareness in the body, mind and spirit."
         textview.textContainerInset = UIEdgeInsetsMake(0, -4, 0, 0)
         textview.textColor = UIColor.lightGray
         return textview
@@ -45,11 +82,13 @@ class VideoCell: BaseCell {
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor.cyan
-        imageView.image = UIImage(named: "dragon.png")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        imageView.image = #imageLiteral(resourceName: "dragon")
         return imageView
     }()
+    
+    var titleLabelHeightConstraint: NSLayoutConstraint?
     
     override func setupViews() {
         backgroundColor = UIColor.white
@@ -69,7 +108,9 @@ class VideoCell: BaseCell {
         addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: thumbnailImageView, attribute: .bottom, multiplier: 1, constant: 8))
         addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .left , relatedBy: .equal, toItem: profileImageView, attribute: .right, multiplier: 1, constant: 8))
         addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .right , relatedBy: .equal, toItem: thumbnailImageView, attribute: .right, multiplier: 1, constant: 0))
-        addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 20))
+        
+        titleLabelHeightConstraint = (NSLayoutConstraint(item: titleLabel, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 44))
+        addConstraint(titleLabelHeightConstraint!)
         
         // subTitleTextView constraints
         addConstraint(NSLayoutConstraint(item: subTitleTextView, attribute: .top, relatedBy: .equal, toItem: titleLabel, attribute: .bottom, multiplier: 1, constant: 4))
@@ -77,4 +118,26 @@ class VideoCell: BaseCell {
         addConstraint(NSLayoutConstraint(item: subTitleTextView, attribute: .right , relatedBy: .equal, toItem: thumbnailImageView, attribute: .right, multiplier: 1, constant: 0))
         addConstraint(NSLayoutConstraint(item: subTitleTextView , attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30))
     }
+    
+    func downloadImage(imageType: String, urlString: String) {
+        if let url = URL(string: urlString) {
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                guard let data = data else { return }
+                
+                DispatchQueue.main.async() {
+                    if imageType == "thumbnail_image_name" {
+                        self.thumbnailImageView.image = UIImage(data: data)
+                    } else if imageType == "profile_image_name" {
+                        self.profileImageView.image = UIImage(data: data)
+                    }
+                }
+            }.resume()
+        }
+    }
+    
 }
+
