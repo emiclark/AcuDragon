@@ -24,6 +24,10 @@ class BaseCell : UICollectionViewCell {
 
 class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
+    let cellId = "cellId"
+    let menuImages = ["home","trending","subscriptions","account"]
+    let menuTitle = ["Home","Trending","Subscription","Account"]
+    
     lazy var collectionview : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -32,10 +36,6 @@ class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UIC
         cv.dataSource = self
         return cv
     }()
-    
-    let cellId = "cellId"
-    let menuImages = ["home","trending","subscriptions","account"]
-    let menuTitle = ["Home","Trending","Subscription","Account"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -106,7 +106,7 @@ class MenuCell : BaseCell {
 
     let menuImageView : UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "dragon.png")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        // iv.image = UIImage(named: "dragon.png")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         iv.tintColor = UIColor.rgb(red: 91, green: 14, blue: 13)
         iv.contentMode = .scaleAspectFit
         return iv

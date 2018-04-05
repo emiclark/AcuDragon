@@ -16,6 +16,8 @@
 		0023F0892017EF4D00D62A51 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0023F0882017EF4D00D62A51 /* VideoCell.swift */; };
 		0023F08C2017F14100D62A51 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0023F08B2017F14100D62A51 /* MenuBar.swift */; };
 		0027C23B201A36E300B8E6DA /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0027C23A201A36E300B8E6DA /* Video.swift */; };
+		005391092024F01C00D58FD7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 005391082024F01C00D58FD7 /* GoogleService-Info.plist */; };
+		67615D83B77D8E8FAD83FBDE /* Pods_AcuDragon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C55E077913BF37EB4F4E31B /* Pods_AcuDragon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,10 @@
 		0023F0882017EF4D00D62A51 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		0023F08B2017F14100D62A51 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		0027C23A201A36E300B8E6DA /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		005391082024F01C00D58FD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		25293DFD10B8002E67E68098 /* Pods-AcuDragon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AcuDragon.release.xcconfig"; path = "Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon.release.xcconfig"; sourceTree = "<group>"; };
+		3C55E077913BF37EB4F4E31B /* Pods_AcuDragon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AcuDragon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		77BA1D0AE365A89427DFCB1C /* Pods-AcuDragon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AcuDragon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67615D83B77D8E8FAD83FBDE /* Pods_AcuDragon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,12 +53,15 @@
 		0023F0642016BBE800D62A51 = {
 			isa = PBXGroup;
 			children = (
+				0023F0702016BBE800D62A51 /* AppDelegate.swift */,
+				0023F06F2016BBE800D62A51 /* AcuDragon */,
 				0027C239201A36CB00B8E6DA /* Model */,
 				0023F0872017EF3300D62A51 /* View */,
 				0023F08A2017EF7900D62A51 /* Controller */,
 				0023F0842017EDE400D62A51 /* helpers */,
-				0023F06F2016BBE800D62A51 /* AcuDragon */,
 				0023F06E2016BBE800D62A51 /* Products */,
+				5D1585896559F45B30FEB2B3 /* Pods */,
+				6561D0DEE6D21AAB74B8854E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,11 +76,11 @@
 		0023F06F2016BBE800D62A51 /* AcuDragon */ = {
 			isa = PBXGroup;
 			children = (
-				0023F0702016BBE800D62A51 /* AppDelegate.swift */,
 				0023F0742016BBE800D62A51 /* Main.storyboard */,
 				0023F0772016BBE800D62A51 /* Assets.xcassets */,
 				0023F0792016BBE800D62A51 /* LaunchScreen.storyboard */,
 				0023F07C2016BBE800D62A51 /* Info.plist */,
+				005391082024F01C00D58FD7 /* GoogleService-Info.plist */,
 			);
 			path = AcuDragon;
 			sourceTree = "<group>";
@@ -108,6 +118,23 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		5D1585896559F45B30FEB2B3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				77BA1D0AE365A89427DFCB1C /* Pods-AcuDragon.debug.xcconfig */,
+				25293DFD10B8002E67E68098 /* Pods-AcuDragon.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6561D0DEE6D21AAB74B8854E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3C55E077913BF37EB4F4E31B /* Pods_AcuDragon.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -115,9 +142,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0023F07F2016BBE800D62A51 /* Build configuration list for PBXNativeTarget "AcuDragon" */;
 			buildPhases = (
+				CA054D711EB006D9228B2E7C /* [CP] Check Pods Manifest.lock */,
 				0023F0692016BBE800D62A51 /* Sources */,
 				0023F06A2016BBE800D62A51 /* Frameworks */,
 				0023F06B2016BBE800D62A51 /* Resources */,
+				F01228A008F60B6DD7BACEEE /* [CP] Embed Pods Frameworks */,
+				00F50DCEA474BA7CE3788B09 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -168,12 +198,76 @@
 			buildActionMask = 2147483647;
 			files = (
 				0023F07B2016BBE800D62A51 /* LaunchScreen.storyboard in Resources */,
+				005391092024F01C00D58FD7 /* GoogleService-Info.plist in Resources */,
 				0023F0782016BBE800D62A51 /* Assets.xcassets in Resources */,
 				0023F0762016BBE800D62A51 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00F50DCEA474BA7CE3788B09 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CA054D711EB006D9228B2E7C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AcuDragon-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F01228A008F60B6DD7BACEEE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0023F0692016BBE800D62A51 /* Sources */ = {
@@ -320,12 +414,13 @@
 		};
 		0023F0802016BBE800D62A51 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77BA1D0AE365A89427DFCB1C /* Pods-AcuDragon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9KW2SQ39Q;
 				INFOPLIST_FILE = AcuDragon/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.emikoclark.AcuDragon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -336,12 +431,13 @@
 		};
 		0023F0812016BBE800D62A51 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25293DFD10B8002E67E68098 /* Pods-AcuDragon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X9KW2SQ39Q;
 				INFOPLIST_FILE = AcuDragon/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.emikoclark.AcuDragon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
