@@ -12,7 +12,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     let myAPIKey = "AIzaSyDmqaPH8yJO7uMfTUXz9AKxP5zdb79ym0Q"
     let myECChannel = "UCD5kT8GTKnbYl9WxgnLM0aA"
-    var videosArr = [String:Any]()
+    var videos = Video()
     
     /* ec channel response ============
      https://www.googleapis.com/youtube/v3/search?key=AIzaSyDmqaPH8yJO7uMfTUXz9AKxP5zdb79ym0Q&channelId=UCD5kT8GTKnbYl9WxgnLM0aA&part=snippet&maxResults=20
@@ -23,14 +23,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
      ==================================
      */
     
-    var videoArr: [Video] = {
-        let videos = [Video]()
+    var videoItems: [Items] = {
+        let videos = [Items]()
         return videos
     }()
 
     
     func fetchVideos() {
-        
+        var videoItemsArr = [Items]()
+
         let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(myAPIKey)&channelId=UCD5kT8GTKnbYl9WxgnLM0aA&part=snippet,id"
         let urlRequest =  URL(string: requestString)
 
@@ -44,39 +45,19 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             print(data.description)
             
             do {
-                let json = try? JSONDecoder().decode(MainJson.self, from: data)
+                let json = try JSONDecoder().decode(Video.self, from: data)
                 
+                guard let etag = json.etag else { print("mainJson etag nil"); return }
+                guard let itemsArray = json.items else { print("error creating json"); return }
                 
-                for vids in json {
-                    if let vid = vids {
-                        videoArr.append(vid)
-                    }
+                self.videos.etag = etag
+                
+                for vid in itemsArray {
+                    self.videoArr.append(vid)
                 }
+                self.videos.items = self.videoArr
                 
-//                self.videosArr = jsonDictionary
-                
-                print(self.videosArr)
-                
-//                guard let items = json["items"],
-//                    let snippet = items["snippet"],
-//                    let snippetDescription = snippet["description"],
-//                    let snippetTitle = snippet["title"],
-//                    let thumbnails = snippet["thumbnails"],
-//                    let thumbnailUrlString = thumbnails["default"]
-//                    else { return }
-//
-//                let video = Video()
-//                video.thumbnails = thumbnails
-//                video.title = snippetTitle
-//                video.descript = snippetDescription
-//                self.videosArr.append(video)
-//
-//                var channel
-//                var title: String?
-//                var videoDescription: String?
-//                var resourceId: ResourceID?
-                
-                
+                print(videosArr)
                 
                 DispatchQueue.main.async() {
                      self.collectionView?.reloadData()
@@ -140,7 +121,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videosArr.count
+        return videoArr.count
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -150,7 +131,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         
-        cell.video = videoArr[indexPath.row]
+        cell.video?.items![indexPath.row] = videos.items![indexPath.row]
         return cell
     }
     
@@ -652,4 +633,24 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 ////    }.resume()
 ////
 //
+///=====================
+//                guard let items = json["items"],
+//                    let snippet = items["snippet"],
+//                    let snippetDescription = snippet["description"],
+//                    let snippetTitle = snippet["title"],
+//                    let thumbnails = snippet["thumbnails"],
+//                    let thumbnailUrlString = thumbnails["default"]
+//                    else { return }
+//
+//                let video = Video()
+//                video.thumbnails = thumbnails
+//                video.title = snippetTitle
+//                video.descript = snippetDescription
+//                self.videosArr.append(video)
+//
+//                var channel
+//                var title: String?
+//                var videoDescription: String?
+//                var resourceId: ResourceID?
+
 

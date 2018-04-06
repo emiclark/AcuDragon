@@ -11,17 +11,16 @@ import UIKit
 class VideoCell: BaseCell {
     
     enum MyKeys: String, CodingKey {
-        case thumnail = "thumbnails"
+        case thumbnail = "thumbnails"
         case urlString = "url"
     }
     
     var video: Video? {
         didSet {
             
-            let thumbnail = video?.thumbnail
-            let thumbnailDefault = thumbnail?.first
-            print(thumbnailDefault! as Thumbnail)
-
+            let thumbnail =  video?.items.snippet.thumbnails
+            let thumbnailHighRes = thumbnail?.last
+            
             if let profile_image_name  = video?.channel?.profile_image_name {
                 downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
             }

@@ -8,8 +8,9 @@
 
 import UIKit
 
-class MainJson: Decodable {
+class Video: Decodable {
     var items: [Items]?
+    var etag: String?
 }
 
 struct Items: Decodable {
@@ -27,13 +28,12 @@ struct Snippet: Decodable {
     var channelId: String?
     var title: String?
     var description: String?
-    var thumbnails: Thumbnails?
+    var thumbnails: [Thumbnails]?
     
 }
 
 struct Thumbnails: Decodable {
-    var `default`: VideoThumbnails?
-    
+    var high: VideoThumbnails?
 }
 
 struct VideoThumbnails: Decodable {
