@@ -131,8 +131,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
+        let urlString = videos.items![indexPath.row].snippet?.thumbnails!.high?.url
         
-        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: (videos.items![indexPath.row].snippet?.thumbnails!.high?.url)!, completion: { (videoThumbnail) in
+        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: urlString!, completion: { (videoThumbnail) in
+           
             DispatchQueue.main.async {
                 cell.thumbnailImageView.image = videoThumbnail
                 self.collectionView?.reloadData()

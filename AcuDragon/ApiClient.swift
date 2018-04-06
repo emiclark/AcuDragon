@@ -49,8 +49,8 @@ class ApiClient {
     }
     
     
-    static func downloadImage(urlString: String, completion: @escaping(UIImage)->()) {
-        
+    static func downloadImage(urlString: String, completion: @escaping(UIImage?)->()) {
+        print("OK")
     }
     
 }
