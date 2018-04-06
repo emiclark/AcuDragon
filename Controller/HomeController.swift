@@ -28,50 +28,51 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return videos
     }()
 
+//    func fetchVideos() {
+//        var videoItemsArr = [Items]()
+//
+//        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(myAPIKey)&channelId=UCD5kT8GTKnbYl9WxgnLM0aA&part=snippet,id"
+//        let urlRequest =  URL(string: requestString)
+//
+//        URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
+//            if error != nil {
+//                print(error!)
+//                return
+//            }
+//            guard let data  = data else { return }
+//
+//            print(data.description)
+//
+//            do {
+//                let json = try JSONDecoder().decode(Video.self, from: data)
+//
+//                guard let etag = json.etag else { print("mainJson etag nil"); return }
+//                guard let itemsArray = json.items else { print("error creating json"); return }
+//
+//                self.videos.etag = etag
+//                for vid in itemsArray {
+//                    videoItemsArr.append(vid)
+//                }
+//                self.videos.items?.append(contentsOf: videoItemsArr)
+//
+//                print(videoItemsArr)
+//
+//                DispatchQueue.main.async() {
+//                    self.collectionView?.reloadData()
+//                }
+//            } catch let error {
+//                print(error)
+//            }
+//            }.resume()
+//    }
     
-    func fetchVideos() {
-        var videoItemsArr = [Items]()
-
-        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(myAPIKey)&channelId=UCD5kT8GTKnbYl9WxgnLM0aA&part=snippet,id"
-        let urlRequest =  URL(string: requestString)
-
-        URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            guard let data  = data else { return }
-            
-            print(data.description)
-            
-            do {
-                let json = try JSONDecoder().decode(Video.self, from: data)
-                
-                guard let etag = json.etag else { print("mainJson etag nil"); return }
-                guard let itemsArray = json.items else { print("error creating json"); return }
-                
-                self.videos.etag = etag
-                
-                for vid in itemsArray {
-                    self.videoArr.append(vid)
-                }
-                self.videos.items = self.videoArr
-                
-                print(videosArr)
-                
-                DispatchQueue.main.async() {
-                     self.collectionView?.reloadData()
-                }
-            } catch let error {
-                print(error)
-            }
-        }.resume()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchVideos()
+        ApiClient.fetchVideos { (videoObject) in
+            self.videos = videoObject
+        }
         
         // Register cell
         self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
@@ -121,7 +122,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videoArr.count
+         return (videos.items!.count > 0 ? videos.items!.count : 0)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -131,7 +132,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         
-        cell.video?.items![indexPath.row] = videos.items![indexPath.row]
+        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: (videos.items![indexPath.row].snippet?.thumbnails!.high?.url)!, completion: { (videoThumbnail) in
+            DispatchQueue.main.async {
+                cell.thumbnailImageView.image = videoThumbnail
+                self.collectionView?.reloadData()
+            }
+        })
+        
+        
         return cell
     }
     

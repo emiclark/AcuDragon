@@ -16,6 +16,7 @@
 		0023F0892017EF4D00D62A51 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0023F0882017EF4D00D62A51 /* VideoCell.swift */; };
 		0023F08C2017F14100D62A51 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0023F08B2017F14100D62A51 /* MenuBar.swift */; };
 		0027C23B201A36E300B8E6DA /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0027C23A201A36E300B8E6DA /* Video.swift */; };
+		003E60A9207721E100BDDF16 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003E60A8207721E100BDDF16 /* ApiClient.swift */; };
 		005391092024F01C00D58FD7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 005391082024F01C00D58FD7 /* GoogleService-Info.plist */; };
 		67615D83B77D8E8FAD83FBDE /* Pods_AcuDragon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C55E077913BF37EB4F4E31B /* Pods_AcuDragon.framework */; };
 /* End PBXBuildFile section */
@@ -32,6 +33,7 @@
 		0023F0882017EF4D00D62A51 /* VideoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		0023F08B2017F14100D62A51 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		0027C23A201A36E300B8E6DA /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
+		003E60A8207721E100BDDF16 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ApiClient.swift; path = AcuDragon/ApiClient.swift; sourceTree = SOURCE_ROOT; };
 		005391082024F01C00D58FD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		25293DFD10B8002E67E68098 /* Pods-AcuDragon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AcuDragon.release.xcconfig"; path = "Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon.release.xcconfig"; sourceTree = "<group>"; };
 		3C55E077913BF37EB4F4E31B /* Pods_AcuDragon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AcuDragon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,6 +83,7 @@
 				0023F0792016BBE800D62A51 /* LaunchScreen.storyboard */,
 				0023F07C2016BBE800D62A51 /* Info.plist */,
 				005391082024F01C00D58FD7 /* GoogleService-Info.plist */,
+				003E60A8207721E100BDDF16 /* ApiClient.swift */,
 			);
 			path = AcuDragon;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				003E60A9207721E100BDDF16 /* ApiClient.swift in Sources */,
 				0023F0832016C51800D62A51 /* HomeController.swift in Sources */,
 				0027C23B201A36E300B8E6DA /* Video.swift in Sources */,
 				0023F0892017EF4D00D62A51 /* VideoCell.swift in Sources */,

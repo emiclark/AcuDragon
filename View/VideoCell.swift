@@ -18,10 +18,10 @@ class VideoCell: BaseCell {
     var video: Video? {
         didSet {
             
-            let thumbnail =  video?.items.snippet.thumbnails
+            let thumbnail =  video?.items
             let thumbnailHighRes = thumbnail?.last
             
-            if let profile_image_name  = video?.channel?.profile_image_name {
+            if let profile_image_name  =  video?.channel?.profile_image_name {
                 downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
             }
 

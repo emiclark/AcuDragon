@@ -16,7 +16,7 @@ class Video: Decodable {
 struct Items: Decodable {
     var etag: String?
     var id: Id?
-    var snippet: [Snippet]?
+    var snippet: Snippet?
     var channelTitle: String?
 }
 
@@ -28,15 +28,15 @@ struct Snippet: Decodable {
     var channelId: String?
     var title: String?
     var description: String?
-    var thumbnails: [Thumbnails]?
-    
-}
-
-struct Thumbnails: Decodable {
-    var high: VideoThumbnails?
+    var thumbnails: VideoThumbnails?
 }
 
 struct VideoThumbnails: Decodable {
+    var medium: Thumbnails?
+    var high: Thumbnails?
+}
+
+struct Thumbnails: Decodable {
     var url: String?
     var width: String?
     var height: String?
