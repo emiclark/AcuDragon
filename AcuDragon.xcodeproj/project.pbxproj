@@ -17,6 +17,7 @@
 		0023F08C2017F14100D62A51 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0023F08B2017F14100D62A51 /* MenuBar.swift */; };
 		0027C23B201A36E300B8E6DA /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0027C23A201A36E300B8E6DA /* Video.swift */; };
 		003E60A9207721E100BDDF16 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003E60A8207721E100BDDF16 /* ApiClient.swift */; };
+		00478BBC20772D5E00C69D46 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00478BBB20772D5E00C69D46 /* Constants.swift */; };
 		005391092024F01C00D58FD7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 005391082024F01C00D58FD7 /* GoogleService-Info.plist */; };
 		67615D83B77D8E8FAD83FBDE /* Pods_AcuDragon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C55E077913BF37EB4F4E31B /* Pods_AcuDragon.framework */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		0023F08B2017F14100D62A51 /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		0027C23A201A36E300B8E6DA /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		003E60A8207721E100BDDF16 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ApiClient.swift; path = AcuDragon/ApiClient.swift; sourceTree = SOURCE_ROOT; };
+		00478BBB20772D5E00C69D46 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = AcuDragon/Constants.swift; sourceTree = SOURCE_ROOT; };
 		005391082024F01C00D58FD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		25293DFD10B8002E67E68098 /* Pods-AcuDragon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AcuDragon.release.xcconfig"; path = "Pods/Target Support Files/Pods-AcuDragon/Pods-AcuDragon.release.xcconfig"; sourceTree = "<group>"; };
 		3C55E077913BF37EB4F4E31B /* Pods_AcuDragon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AcuDragon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +85,7 @@
 				0023F0792016BBE800D62A51 /* LaunchScreen.storyboard */,
 				0023F07C2016BBE800D62A51 /* Info.plist */,
 				005391082024F01C00D58FD7 /* GoogleService-Info.plist */,
+				00478BBB20772D5E00C69D46 /* Constants.swift */,
 				003E60A8207721E100BDDF16 /* ApiClient.swift */,
 			);
 			path = AcuDragon;
@@ -284,6 +287,7 @@
 				0023F0712016BBE800D62A51 /* AppDelegate.swift in Sources */,
 				0023F0862017EE2200D62A51 /* extensions.swift in Sources */,
 				0023F08C2017F14100D62A51 /* MenuBar.swift in Sources */,
+				00478BBC20772D5E00C69D46 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

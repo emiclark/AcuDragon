@@ -10,11 +10,12 @@ import UIKit
 
 class ApiClient {
     
-    static func fetchVideos( completion: @escaping(Video)->() ) {
+    class func fetchVideos( completion: @escaping(Video)->() ) {
         var videoObject = Video()
         var videoItemsArr = [Items]()
+        var videoSnippet  = Snippet()
         
-        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(myAPIKey)&channelId=UCD5kT8GTKnbYl9WxgnLM0aA&part=snippet,id"
+        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
         let urlRequest =  URL(string: requestString)
         
         URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
@@ -31,7 +32,6 @@ class ApiClient {
                 
                 guard let etag = json.etag else { print("mainJson etag nil"); return }
                 guard let itemsArray = json.items else { print("error creating json"); return }
-                
                 videoObject.etag = etag
                 
                 for vid in itemsArray {
@@ -49,7 +49,7 @@ class ApiClient {
     }
     
     
-    static func downloadImage(urlString: String, completion: @escaping(UIImage?)->()) {
+    class func downloadImage(urlString: String, completion: @escaping(UIImage)->()) {
         print("OK")
     }
     

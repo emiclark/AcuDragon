@@ -9,19 +9,8 @@
 import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-    let myAPIKey = "AIzaSyDmqaPH8yJO7uMfTUXz9AKxP5zdb79ym0Q"
-    let myECChannel = "UCD5kT8GTKnbYl9WxgnLM0aA"
+
     var videos = Video()
-    
-    /* ec channel response ============
-     https://www.googleapis.com/youtube/v3/search?key=AIzaSyDmqaPH8yJO7uMfTUXz9AKxP5zdb79ym0Q&channelId=UCD5kT8GTKnbYl9WxgnLM0aA&part=snippet&maxResults=20
-
-     // returns playlist for ec channel 50 items
-     https://www.googleapis.com/youtube/v3/playlistItems?playlistId=UUD5kT8GTKnbYl9WxgnLM0aA&key=AIzaSyCz7ChsZALe88gbZuQyexQY82oQ1de6qZU&part=snippet&maxResults=50
-
-     ==================================
-     */
     
     var videoItems: [Items] = {
         let videos = [Items]()
@@ -31,7 +20,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //    func fetchVideos() {
 //        var videoItemsArr = [Items]()
 //
-//        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(myAPIKey)&channelId=UCD5kT8GTKnbYl9WxgnLM0aA&part=snippet,id"
+//        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
 //        let urlRequest =  URL(string: requestString)
 //
 //        URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
@@ -133,8 +122,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         let urlString = videos.items![indexPath.row].snippet?.thumbnails!.high?.url
         
-        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: urlString!, completion: { (videoThumbnail) in
-           
+        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: urlString, completion: { (videoThumbnail) in
+        
             DispatchQueue.main.async {
                 cell.thumbnailImageView.image = videoThumbnail
                 self.collectionView?.reloadData()
