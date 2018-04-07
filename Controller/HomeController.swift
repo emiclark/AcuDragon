@@ -11,88 +11,19 @@ import UIKit
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     var videos = Video()
+    let apiClient = ApiClient()
     
-    var videoItems: [Items] = {
-        let videos = [Items]()
-        return videos
-    }()
-
-//    func fetchVideos() {
-//        var videoItemsArr = [Items]()
-//
-//        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
-//        let urlRequest =  URL(string: requestString)
-//
-//        URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
-//            if error != nil {
-//                print(error!)
-//                return
-//            }
-//            guard let data  = data else { return }
-//
-//            print(data.description)
-//
-//            do {
-//                let json = try JSONDecoder().decode(Video.self, from: data)
-//
-//                guard let etag = json.etag else { print("mainJson etag nil"); return }
-//                guard let itemsArray = json.items else { print("error creating json"); return }
-//
-//                self.videos.etag = etag
-//                for vid in itemsArray {
-//                    videoItemsArr.append(vid)
-//                }
-//                self.videos.items?.append(contentsOf: videoItemsArr)
-//
-//                print(videoItemsArr)
-//
-//                DispatchQueue.main.async() {
-//                    self.collectionView?.reloadData()
-//                }
-//            } catch let error {
-//                print(error)
-//            }
-//            }.resume()
-//    }
-    
+//    var videoItems: [Items] = {
+//        let videos = [Items]()
+//        return videos
+//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ApiClient.fetchVideos { (videoObject) in
-            DispatchQueue.main.async {
-                self.videos = videoObject
-                self.setupViewController()
-                self.collectionView?.reloadData()
-            }
-        }
-        
-//        // Register cell
-//        self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
-//
-//        // adjust collectionview and scrollview to begin below menubar
-//        collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
-//        collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
-//
-//        navigationController?.navigationBar.isTranslucent = false
-//        navigationController?.navigationBar.barTintColor = UIColor(red: 230/255, green: 32/255, blue: 31/255, alpha: 1)
-//
-//        let navTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
-//        navTitleLabel.text = "Home"
-//        navTitleLabel.font = UIFont.systemFont(ofSize: 20)
-//        navTitleLabel.textColor = UIColor.white
-//        navigationItem.titleView = navTitleLabel
-//        collectionView?.backgroundColor = UIColor.white
-//
-//        // add search to navbar
-//        let searchIcon = UIImage(named:"searchIcon")?.withRenderingMode(.alwaysOriginal)
-//        let searchBarButtonItem = UIBarButtonItem(image: searchIcon, style: .plain, target: self, action: #selector(handleSearch))
-//
-//        // add more to navbar
-//        let moreIcon = UIImage(named:"moreIcon")?.withRenderingMode(.alwaysOriginal)
-//        let moreBarButtonItem = UIBarButtonItem(image: moreIcon, style: .plain, target: self, action: #selector(handleMore))
-//        navigationItem.rightBarButtonItems = [ moreBarButtonItem, searchBarButtonItem ]
-//        setupMenuBar()
+        setupViewController()
+
+        self.apiClient.fetchVideos2()
     }
     
     func setupViewController() {
@@ -144,7 +75,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (videos.items?.count)!
+        return 1
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -153,18 +84,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
-        let urlString = videos.items![indexPath.row].snippet?.thumbnails!.high?.url
         
-        cell.videoItem = videos.items![indexPath.row]
-        
-//        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: urlString, completion: { (videoThumbnail) in
-//
-//            DispatchQueue.main.async {
-//                cell.thumbnailImageView.image = videoThumbnail
-//                self.collectionView?.reloadData()
-//            }
-//        })
-        
+        cell.videoItem = self.apiClient.videosArray.items![indexPath.row]
         
         return cell
     }
@@ -183,6 +104,200 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return 0
     }
 }
+
+extension HomeController : reloadDataDelegate {
+    func updateUI() {
+        self.collectionView?.reloadData()
+    }
+}
+
+//===============
+//class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+//
+//    var videos = Video()
+//
+//    var videoItems: [Items] = {
+//        let videos = [Items]()
+//        return videos
+//    }()
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        setupViewController()
+//
+//        ApiClient.fetchVideos2()
+//    }
+//
+//    //    ApiClient.fetchVideos { (videoObject) in
+//    //        DispatchQueue.main.async {
+//    //            self.videos = videoObject
+//    //            self.collectionView?.reloadData()
+//    //        }
+//    //    }
+//
+//}
+////        // Register cell
+////        self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
+////
+////        // adjust collectionview and scrollview to begin below menubar
+////        collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
+////        collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
+////
+////        navigationController?.navigationBar.isTranslucent = false
+////        navigationController?.navigationBar.barTintColor = UIColor(red: 230/255, green: 32/255, blue: 31/255, alpha: 1)
+////
+////        let navTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+////        navTitleLabel.text = "Home"
+////        navTitleLabel.font = UIFont.systemFont(ofSize: 20)
+////        navTitleLabel.textColor = UIColor.white
+////        navigationItem.titleView = navTitleLabel
+////        collectionView?.backgroundColor = UIColor.white
+////
+////        // add search to navbar
+////        let searchIcon = UIImage(named:"searchIcon")?.withRenderingMode(.alwaysOriginal)
+////        let searchBarButtonItem = UIBarButtonItem(image: searchIcon, style: .plain, target: self, action: #selector(handleSearch))
+////
+////        // add more to navbar
+////        let moreIcon = UIImage(named:"moreIcon")?.withRenderingMode(.alwaysOriginal)
+////        let moreBarButtonItem = UIBarButtonItem(image: moreIcon, style: .plain, target: self, action: #selector(handleMore))
+////        navigationItem.rightBarButtonItems = [ moreBarButtonItem, searchBarButtonItem ]
+////        setupMenuBar()
+////    }
+//
+//func setupViewController() {
+//    // Register cell
+//    self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
+//
+//    // adjust collectionview and scrollview to begin below menubar
+//    collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
+//    collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
+//
+//    navigationController?.navigationBar.isTranslucent = false
+//    navigationController?.navigationBar.barTintColor = UIColor(red: 230/255, green: 32/255, blue: 31/255, alpha: 1)
+//
+//    let navTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+//    navTitleLabel.text = "Home"
+//    navTitleLabel.font = UIFont.systemFont(ofSize: 20)
+//    navTitleLabel.textColor = UIColor.white
+//    navigationItem.titleView = navTitleLabel
+//    collectionView?.backgroundColor = UIColor.white
+//
+//    // add search to navbar
+//    let searchIcon = UIImage(named:"searchIcon")?.withRenderingMode(.alwaysOriginal)
+//    let searchBarButtonItem = UIBarButtonItem(image: searchIcon, style: .plain, target: self, action: #selector(handleSearch))
+//
+//    // add more to navbar
+//    let moreIcon = UIImage(named:"moreIcon")?.withRenderingMode(.alwaysOriginal)
+//    let moreBarButtonItem = UIBarButtonItem(image: moreIcon, style: .plain, target: self, action: #selector(handleMore))
+//    navigationItem.rightBarButtonItems = [ moreBarButtonItem, searchBarButtonItem ]
+//    setupMenuBar()
+//}
+//
+//@objc func handleSearch() {
+//    print("123")
+//}
+//
+//@objc func handleMore() {
+//    print("234")
+//}
+//
+//let menuBar: MenuBar = {
+//    let mb = MenuBar()
+//    return mb
+//}()
+//
+//private func setupMenuBar() {
+//    view.addSubview(menuBar)
+//    view.addConstraintsWithFormat(format: "H:|[v0]|", views: menuBar)
+//    view.addConstraintsWithFormat(format: "V:|[v0(50)]", views: menuBar)
+//}
+//
+//override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//    return 1
+//}
+//
+//override func numberOfSections(in collectionView: UICollectionView) -> Int {
+//    return 1
+//}
+//
+//override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
+//
+//    cell.videoItem = videos.items![indexPath.row]
+//
+//    //        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: urlString, completion: { (videoThumbnail) in
+//    //
+//    //            DispatchQueue.main.async {
+//    //                cell.thumbnailImageView.image = videoThumbnail
+//    //                self.collectionView?.reloadData()
+//    //            }
+//    //        })
+//
+//
+//    return cell
+//}
+//
+//func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+//    //     FIX:    calculate all object height+ vertical padding
+//    //        let cell = videos[indexPath.row]
+//    //        let height = (view.frame.width - 16 - 16) * 9 / 16
+//
+//    let height = (view.frame.width - 16 - 16) * 9 / 16
+//    return CGSize(width: view.frame.width, height: height + 16 + 68)
+//}
+//
+//func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//    return 0
+//}
+//}
+//
+//extension HomeController : reloadDataDelegate {
+//    func updateUI() {
+//        self.collectionView?.reloadData()
+//    }
+//}
+//===============
+
+//    func fetchVideos() {
+//        var videoItemsArr = [Items]()
+//
+//        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
+//        let urlRequest =  URL(string: requestString)
+//
+//        URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
+//            if error != nil {
+//                print(error!)
+//                return
+//            }
+//            guard let data  = data else { return }
+//
+//            print(data.description)
+//
+//            do {
+//                let json = try JSONDecoder().decode(Video.self, from: data)
+//
+//                guard let etag = json.etag else { print("mainJson etag nil"); return }
+//                guard let itemsArray = json.items else { print("error creating json"); return }
+//
+//                self.videos.etag = etag
+//                for vid in itemsArray {
+//                    videoItemsArr.append(vid)
+//                }
+//                self.videos.items?.append(contentsOf: videoItemsArr)
+//
+//                print(videoItemsArr)
+//
+//                DispatchQueue.main.async() {
+//                    self.collectionView?.reloadData()
+//                }
+//            } catch let error {
+//                print(error)
+//            }
+//            }.resume()
+//    }
+
 
 //================
 ////
