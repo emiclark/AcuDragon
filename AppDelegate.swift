@@ -19,12 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        let vc = UIViewController()
+//        let vc = HomeController()
+        let vc = ParentViewContoller()
+        
         let navigationController = UINavigationController(rootViewController: vc)
         self.window?.rootViewController = navigationController
         self.window!.makeKeyAndVisible()
-        let layout = UICollectionViewFlowLayout()
-        window?.rootViewController = UINavigationController(rootViewController: HomeController(collectionViewLayout: layout))
+//        let layout = UICollectionViewFlowLayout()
+//        window?.rootViewController = UINavigationController(rootViewController: HomeController(collectionViewLayout: layout))
+        window?.rootViewController = UINavigationController(rootViewController: vc)
         
         // remove black bar beneath navbar
         UINavigationBar.appearance().shadowImage = UIImage()

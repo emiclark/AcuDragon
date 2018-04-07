@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeController2.swift
 //  AcuDragon
 //
 //  Created by Emiko Clark on 1/22/18.
@@ -8,14 +8,11 @@
 
 import UIKit
 
-class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HomeController2: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ApiClient2.delegate = self
-        
-//        ApiClient.fetchVideos2()
-        self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
+        ApiClient2.delegate2 = self as! reloadDataDelegate2
         setupViewController()
     }
     
@@ -23,7 +20,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
     func setupViewController() {
         // Register cell
-//        self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
+        self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
         
         // adjust collectionview and scrollview to begin below menubar
         collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
@@ -103,7 +100,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 }
 
 // MARK:- reloadData Delegate
-extension HomeController : reloadDataDelegate {
+extension HomeController2 : reloadDataDelegate {
     func updateUI() {
         self.collectionView?.reloadData()
     }

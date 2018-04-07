@@ -38,8 +38,8 @@ struct VideoThumbnails: Decodable {
 
 struct Thumbnails: Decodable {
     var url: String?
-    var width: String?
-    var height: String?
+    var width: Int?
+    var height: Int?
 }
 
 

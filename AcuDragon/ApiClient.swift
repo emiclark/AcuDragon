@@ -14,10 +14,10 @@ protocol reloadDataDelegate {
 
 class ApiClient {
     
-    var videosArray = Video()
-    var delegate: reloadDataDelegate?
+    static var videosArray = Video()
+    static var delegate: reloadDataDelegate?
 
-    func fetchVideos2() {
+    class func fetchVideos2() {
             
         let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
         let urlRequest =  URL(string: requestString)
@@ -32,10 +32,10 @@ class ApiClient {
             guard let data  = data else { return }
             
             do {
-                self.videosArray = try JSONDecoder().decode(Video.self, from: data)
+                ApiClient.videosArray = try JSONDecoder().decode(Video.self, from: data)
 
                 DispatchQueue.main.async() {
-                    self.delegate?.updateUI()
+                    ApiClient.delegate?.updateUI()
                 }
             } catch let error {
                 print(error)
