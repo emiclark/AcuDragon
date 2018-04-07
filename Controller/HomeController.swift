@@ -122,13 +122,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         let urlString = videos.items![indexPath.row].snippet?.thumbnails!.high?.url
         
-        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: urlString, completion: { (videoThumbnail) in
+        cell.videoItem = videos.items![indexPath.row]
         
-            DispatchQueue.main.async {
-                cell.thumbnailImageView.image = videoThumbnail
-                self.collectionView?.reloadData()
-            }
-        })
+//        cell.thumbnailImageView.image = ApiClient.downloadImage(urlString: urlString, completion: { (videoThumbnail) in
+//
+//            DispatchQueue.main.async {
+//                cell.thumbnailImageView.image = videoThumbnail
+//                self.collectionView?.reloadData()
+//            }
+//        })
         
         
         return cell

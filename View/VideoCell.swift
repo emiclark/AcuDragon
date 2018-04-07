@@ -10,6 +10,8 @@ import UIKit
 
 class VideoCell: BaseCell {
     
+    var videoItem = Items()
+
     enum MyKeys: String, CodingKey {
         case thumbnail = "thumbnails"
         case urlString = "url"
@@ -18,27 +20,24 @@ class VideoCell: BaseCell {
     var video: Video? {
         didSet {
             
-            let thumbnailItems =  video?.items
-            let thumbnailHighRes = thumbnailItems
+//            let videoItem = Items()
             
-            if let profile_image_name  = video?.items  video?.channel?.profile_image_name {
-                downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
-            }
+//            if let profile_image_name  =  video?.channel?.profile_image_name {
+//                downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
+//            }
             
-            if let thumbnailImageView = video?.items. {
-                let urlString = video?.items?.index(after: 2).snippet.thumbnails.high.url
-                downloadImage(imageType: VideoThumbnails, urlString: urlString)
+            if let thumbnailUrlString = videoItem.snippet?.thumbnails?.high?.url {
+                downloadImage(imageType: "videoThumbnail", urlString: thumbnailUrlString)
             }
 
-            titleLabel.text = video?.title
+            titleLabel.text = videoItem.snippet?.title
 
-            if let channelSubtitle = video?.channel?.name {
-                let subtitleText = "\(String(describing: (video?.channel?.name)!)) - \(channelSubtitle)"
-                subTitleTextView.text = subtitleText
+            if let channelSubtitle = videoItem.snippet?.description {
+                subTitleTextView.text = channelSubtitle
             }
 
             // estimate height for titleLabelText
-            if let title = video?.item.title {
+            if let title = videoItem.snippet?.title {
                 let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
                 let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
                 let estimatedRect = NSString(string: title).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
