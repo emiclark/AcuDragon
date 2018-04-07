@@ -60,16 +60,49 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewDidLoad()
         
         ApiClient.fetchVideos { (videoObject) in
-            self.videos = videoObject
+            DispatchQueue.main.async {
+                self.videos = videoObject
+                self.setupViewController()
+                self.collectionView?.reloadData()
+            }
         }
         
+//        // Register cell
+//        self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
+//
+//        // adjust collectionview and scrollview to begin below menubar
+//        collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
+//        collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
+//
+//        navigationController?.navigationBar.isTranslucent = false
+//        navigationController?.navigationBar.barTintColor = UIColor(red: 230/255, green: 32/255, blue: 31/255, alpha: 1)
+//
+//        let navTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+//        navTitleLabel.text = "Home"
+//        navTitleLabel.font = UIFont.systemFont(ofSize: 20)
+//        navTitleLabel.textColor = UIColor.white
+//        navigationItem.titleView = navTitleLabel
+//        collectionView?.backgroundColor = UIColor.white
+//
+//        // add search to navbar
+//        let searchIcon = UIImage(named:"searchIcon")?.withRenderingMode(.alwaysOriginal)
+//        let searchBarButtonItem = UIBarButtonItem(image: searchIcon, style: .plain, target: self, action: #selector(handleSearch))
+//
+//        // add more to navbar
+//        let moreIcon = UIImage(named:"moreIcon")?.withRenderingMode(.alwaysOriginal)
+//        let moreBarButtonItem = UIBarButtonItem(image: moreIcon, style: .plain, target: self, action: #selector(handleMore))
+//        navigationItem.rightBarButtonItems = [ moreBarButtonItem, searchBarButtonItem ]
+//        setupMenuBar()
+    }
+    
+    func setupViewController() {
         // Register cell
         self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
         
         // adjust collectionview and scrollview to begin below menubar
         collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
-
+        
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 230/255, green: 32/255, blue: 31/255, alpha: 1)
         
@@ -111,7 +144,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-         return (videos.items!.count > 0 ? videos.items!.count : 0)
+        return (videos.items?.count)!
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -37,6 +37,7 @@ class ApiClient {
                 for vid in itemsArray {
                     videoItemsArr.append(vid)
                 }
+                
                 videoObject.items?.append(contentsOf: videoItemsArr)
                 
                 DispatchQueue.main.async() {
