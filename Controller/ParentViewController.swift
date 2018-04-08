@@ -14,18 +14,11 @@ class ParentViewContoller: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         ApiClient2.delegateCVC2 = self
-        
         ApiClient2.fetchVideos2()
         
     }
-    
-//    func setView() {
-//        self.addChildViewController(childVC!)
-//        currentStateView.addSubview((childVC?.view)!)
-//        childVC?.didMove(toParentViewController: self)
-//    }
     
 }
 
@@ -39,6 +32,8 @@ extension ParentViewContoller: loadCollectionVC2 {
     }
     
     func setView() {
+        print(">>>>>>>>>> b4 loading childVC  <<<<<<<<<<<<<<")
+
         self.addChildViewController(self.childVC)
         self.currentStateView.addSubview((self.childVC.view))
         self.childVC.didMove(toParentViewController: self)
