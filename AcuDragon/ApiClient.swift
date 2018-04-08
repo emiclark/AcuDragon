@@ -14,15 +14,27 @@ protocol reloadDataDelegate {
 
 class ApiClient {
     
-    var videosArray = Video()
+    static var videosArray = Video()
     var delegate: reloadDataDelegate?
 
-    func fetchVideos2() {
+    func fetchVideos2(pageNum: Int) {
             
-        let requestString = "https://www.googleapis.com/youtube/v3/search?key=\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
-        let urlRequest =  URL(string: requestString)
+        let urlString = "\(Constants.baseUrlString)\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
+        let url = URL(string: urlString)
+        let urlRequest = URLRequest(url: url!)
         
-        URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
+        getVideos(urlRequest: urlRequest, completion: { (Video) in
+            ApiClient.videosArray = Video
+            
+            DispatchQueue.main.async() {
+                self.delegate?.updateUI()
+            }
+        })
+    }
+    
+    func getVideos(urlRequest: URLRequest, completion: @escaping (_ jsonArr: Video) -> ()) {
+        
+        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             
             if error != nil {
                 print(error!)
@@ -32,16 +44,54 @@ class ApiClient {
             guard let data  = data else { return }
             
             do {
-                self.videosArray = try JSONDecoder().decode(Video.self, from: data)
+                ApiClient.videosArray = try JSONDecoder().decode(Video.self, from: data)
+                completion(ApiClient.videosArray)
 
-                DispatchQueue.main.async() {
-                    self.delegate?.updateUI()
-                }
             } catch let error {
                 print(error)
             }
         }.resume()
     }
+
+    class func downloadImage(urlString: String, completion: @escaping(UIImage)->()) {
+        print("OK")
+    }
+}
+    
+//===============
+//    var videosArray = Video()
+//    var delegate: reloadDataDelegate?
+//
+//    func fetchVideos2(pageNum: Int) {
+//
+//        let requestString = "\(Constants.baseUrlString)\(Constants.myAPIKey)&channelId=\(Constants.myECChannel)&part=snippet,id"
+//        let urlRequest =  URL(string: requestString)
+//
+//        getVideos(urlRequest: urlRequest, completion: {(jsonData)
+//
+//        })
+//        URLSession.shared.dataTask(with: urlRequest!) { (data, response, error) in
+//
+//            if error != nil {
+//                print(error!)
+//                return
+//            }
+//
+//            guard let data  = data else { return }
+//
+//            do {
+//                self.videosArray = try JSONDecoder().decode(Video.self, from: data)
+//
+//                DispatchQueue.main.async() {
+//                    self.delegate?.updateUI()
+//                }
+//            } catch let error {
+//                print(error)
+//            }
+//            }.resume()
+//    }
+//
+//===============
     
 //    class func fetchVideos( completion: @escaping(Video)->() ) {
 //        var delegate: reloadDataDelegate?
@@ -82,10 +132,4 @@ class ApiClient {
 //            }
 //        }.resume()
 //    }
-    
-    
-    class func downloadImage(urlString: String, completion: @escaping(UIImage)->()) {
-        print("OK")
-    }
-    
-}
+

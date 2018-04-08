@@ -10,20 +10,51 @@ import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    var videos = Video()
     let apiClient = ApiClient()
+    let pageNum = 0
     
-//    var videoItems: [Items] = {
-//        let videos = [Items]()
-//        return videos
-//    }()
+    override func viewWillAppear(_ animated: Bool) {
+        initializeVideoArrayForEmptyState()
+    }
+    
+    func initializeVideoArrayForEmptyState() {
+        
+        // create empty video array for empty state - eva
+        let eva = Video()
+        eva.etag = " "
+        eva.items = [Items]()
+        
+        var itemsArr = Items()
+        itemsArr.etag = " "
+        itemsArr.channelTitle = " "
+        itemsArr.id = Id()
+        itemsArr.id?.playlistId = " "
+        
+        var snippet = Snippet()
+        snippet.channelId = " "
+        snippet.title = " "
+        snippet.description = " "
+        
+        var videoThumbnails = VideoThumbnails()
+        videoThumbnails.high = Thumbnails()
+        
+        videoThumbnails.high?.url = " "
+        videoThumbnails.high?.height = 0
+        videoThumbnails.high?.width = 0
+
+        snippet.thumbnails = videoThumbnails
+        itemsArr.snippet = snippet
+        eva.items?.append(itemsArr)
+        ApiClient.videosArray = eva
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        apiClient.delegate = self
         setupViewController()
+        self.apiClient.fetchVideos2(pageNum: pageNum)
 
-        self.apiClient.fetchVideos2()
     }
     
     func setupViewController() {
@@ -75,7 +106,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return (ApiClient.videosArray.items?.count)!
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -85,7 +116,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
         
-        cell.videoItem = self.apiClient.videosArray.items![indexPath.row]
+        cell.videoItem = ApiClient.videosArray.items![indexPath.row]
         
         return cell
     }
