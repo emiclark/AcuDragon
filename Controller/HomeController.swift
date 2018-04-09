@@ -9,45 +9,80 @@
 import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
-    var videos: [Video] = {
-        let videoArr = [Video]()
-        return videoArr
+    let vcell = VideoCell()
+    
+    let menuBar: MenuBar = {
+        let mb = MenuBar()
+        return mb
     }()
 
-    func fetchVideos() {
-        let url = URL(string: "https://s3-us-west-2.amazonaws.com/youtubeassets/home.json")
-        
-        URLSession.shared.dataTask(with: url!) { (data, response, error) in
-            if error != nil {
-                print(error!)
-                return
-            }
-            guard let data  = data else { return }
+    var activityIndicator: UIActivityIndicatorView!
+    let apiClient = ApiClient()
+    let pageNum = 0
 
-            do {
-                let json = try JSONDecoder().decode([Video].self, from: data)
-                self.videos = json
-                print(self.videos)
-                
-            } catch let error {
-                print(error)
-            }
-        }.resume()
+    // MARK:- View Methods
+    override func viewWillAppear(_ animated: Bool) {
+        initializeVideoModelForEmptyState()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        apiClient.delegate = self
+
+        startActivityIndicator()
+        setupViewController()
+        self.apiClient.fetchVideos(pageNum: pageNum)
+    }
+    
+    // MARK:- Setup/Initialization Methods
+    func initializeVideoModelForEmptyState() {
         
-        fetchVideos()
+        // create empty video array for empty state
+        let eva = Video()
+        eva.etag = " "
+        eva.items = [Items]()
         
+        var itemsArr = Items()
+        itemsArr.etag = " "
+        itemsArr.channelTitle = " "
+        itemsArr.id = Id()
+        itemsArr.id?.playlistId = " "
+        
+        var snippet = Snippet()
+        snippet.channelId = " "
+        snippet.title = " "
+        snippet.description = " "
+        
+        var videoThumbnails = VideoThumbnails()
+        videoThumbnails.high = Thumbnails()
+        
+        videoThumbnails.high?.url = " "
+        videoThumbnails.high?.height = 0
+        videoThumbnails.high?.width = 0
+        
+        snippet.thumbnails = videoThumbnails
+        itemsArr.snippet = snippet
+        eva.items?.append(itemsArr)
+        ApiClient.videosArray = eva
+    }
+    
+    func startActivityIndicator() {
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+        self.activityIndicator.color = .blue
+        self.activityIndicator.center = view.center
+        self.activityIndicator.hidesWhenStopped = false
+        self.activityIndicator.startAnimating()
+        view.addSubview(self.activityIndicator)
+    }
+    
+    func setupViewController() {
         // Register cell
         self.collectionView!.register(VideoCell.self, forCellWithReuseIdentifier: "cellid")
         
         // adjust collectionview and scrollview to begin below menubar
         collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
-
+        
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = UIColor(red: 230/255, green: 32/255, blue: 31/255, alpha: 1)
         
@@ -66,21 +101,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let moreIcon = UIImage(named:"moreIcon")?.withRenderingMode(.alwaysOriginal)
         let moreBarButtonItem = UIBarButtonItem(image: moreIcon, style: .plain, target: self, action: #selector(handleMore))
         navigationItem.rightBarButtonItems = [ moreBarButtonItem, searchBarButtonItem ]
+        
         setupMenuBar()
     }
-    
-    @objc func handleSearch() {
-        print("123")
-    }
-    
-    @objc func handleMore() {
-        print("234")
-    }
-    
-    let menuBar: MenuBar = {
-        let mb = MenuBar()
-        return mb
-    }()
 
     private func setupMenuBar() {
         view.addSubview(menuBar)
@@ -88,8 +111,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         view.addConstraintsWithFormat(format: "V:|[v0(50)]", views: menuBar)
     }
     
+    // MARK:- CollectionView Delegate Methods
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videos.count
+        return (ApiClient.videosArray.items?.count)!
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -98,8 +122,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
+        let videoInfo = ApiClient.videosArray.items![indexPath.row]
+//        cell.videoItem = ApiClient.videosArray.items![indexPath.row]
         
-        cell.video = (videos[indexPath.row])
+        cell.subTitleTextView.text =  videoInfo.channelTitle != nil ?  videoInfo.channelTitle : "AcuDragon Wellness System"
+        cell.subTitleTextView.text =  videoInfo.snippet?.description != nil ?  videoInfo.snippet?.description : "AcuDragon Wellness System"
+        
+        apiClient.downloadImage(urlString: (videoInfo.snippet?.thumbnails?.high?.url!)!) { (thumbnailImage) in
+            cell.thumbnailImageView.image = thumbnailImage
+        }
+
+        cell.profileImageView.image = #imageLiteral(resourceName: "dragon")
+
         return cell
     }
     
@@ -116,76 +150,24 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
+    
+    // MARK:- MenuBar Methods
+    @objc func handleSearch() {
+        print("123")
+    }
+    
+    @objc func handleMore() {
+        print("234")
+    }
+    
 }
 
-
-//================
-//    struct courses_missing_fields: Decodable {
-//        let name: String?
-//        let description: String?
-//        let courses: [Course]?
-//    }
-//
-//    struct Course: Decodable {
-//        let id: Int?
-//        let name: String?
-//        let link: String?
-//        let imageUrl: String?
-//
-//    }
-
-// test api
-//        let url = URL(string: "http://api.letsbuildthatapp.com/jsondecodable/courses")
-//
-//        URLSession.shared.dataTask(with: url!) { (data, response, err) in
-//            if err != nil {
-//                print(err!)
-//                return
-//            }
-//
-//            guard let data = data else { return }
-//
-//            do {
-//               let courses = try JSONDecoder().decode([Course].self, from: data)
-//                print(courses)
-//            }catch  {
-//
-//            }
-//
-////             swift 3
-////            do {
-////                guard let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)  as? [String : Any] else { return }
-////
-////                let course = Course(json: json)
-////                print(course)
-////
-////
-////            } catch let jsonErr {
-////                print("Error with json serialization: \(jsonErr)")
-////            }
-////
-//        }.resume()
-
-// parsing more complex json objects using decodable
-//let url2 = URL(string: "http://api.letsbuildthatapp.com/jsondecodable/website_description")
-//
-//let url3 = URL(string: "http://api.letsbuildthatapp.com/jsondecodable/courses_missing_fields")
-//
-//
-//URLSession.shared.dataTask(with: url3!) { (data, response, error) in
-//    if error != nil {
-//        print(error!)
-//        return
-//    }
-//
-//    guard let data = data else { return }
-//    do {
-//        let missing_fields = try JSONDecoder().decode(courses_missing_fields.self, from: data)
-//        print(missing_fields)
-//    } catch {
-//
-//    }
-//
-//    }.resume()
-//
+// MARK:- Extensions
+extension HomeController : reloadDataDelegate {
+    func updateUI() {
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
+        self.collectionView?.reloadData()
+    }
+}
 
