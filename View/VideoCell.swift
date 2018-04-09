@@ -8,10 +8,15 @@
 
 import UIKit
 
+//protocol reloadDataDelegate {
+//    func updateUI()
+//}
+
 class VideoCell: BaseCell {
     
     var videoItem = Items()
-
+    var delegate: reloadDataDelegate?
+    
     enum MyKeys: String, CodingKey {
         case thumbnail = "thumbnails"
         case urlString = "url"
@@ -20,9 +25,10 @@ class VideoCell: BaseCell {
     var video: Video? {
         didSet {
             
+            dump(videoItem)
 //            let videoItem = Items()
             
-//            if let profile_image_name  =  video?.channel?.profile_image_name {
+//            if let profile_image_name  =  videoItem.snippet {
 //                downloadImage(imageType: "profile_image_name", urlString: profile_image_name)
 //            }
             
@@ -48,10 +54,29 @@ class VideoCell: BaseCell {
                     titleLabelHeightConstraint?.constant = 21
                 }
                 print("estimatedRect:", estimatedRect)
+                titleLabel.text = title
+            }
+            
+            if let channelDescription = videoItem.snippet?.description {
+                let size = CGSize(width: frame.size.width - 16 - 44 - 8 - 16, height: 1000)
+                let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+                let estimatedRect = NSString(string: channelDescription).boundingRect(with: size, options: options, attributes: [ NSAttributedStringKey.font : UIFont.systemFont(ofSize: 17)] , context: nil)
+                
+                if estimatedRect.size.height > 21 {
+                    titleLabelHeightConstraint?.constant = 44
+                } else {
+                    titleLabelHeightConstraint?.constant = 21
+                }
+                print("estimatedRect:", estimatedRect)
+                subTitleTextView.text = channelDescription
             }
 
             // estimate height for subTitle
             // estimate height for VideoCell (video+16+titleLabelHeight+8+subTitleLabelHeight+16)
+            
+            if let thumbnailImageUrlString = videoItem.snippet?.thumbnails?.high?.url {
+                downloadImage(imageType: "thumbnail", urlString: thumbnailImageUrlString)
+            }
         }
     }
     
@@ -60,7 +85,7 @@ class VideoCell: BaseCell {
         imageView.layer.cornerRadius = 22
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
-        imageView.image = #imageLiteral(resourceName: "dragon")
+        imageView.image = #imageLiteral(resourceName: "channelDragonPlaceholder")
         return imageView
     }()
     
@@ -91,7 +116,7 @@ class VideoCell: BaseCell {
         imageView.backgroundColor = UIColor.cyan
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.image = #imageLiteral(resourceName: "dragon")
+        imageView.image = UIImage(named: "dragonPlaceholder.jpg")
         return imageView
     }()
     
@@ -141,6 +166,7 @@ class VideoCell: BaseCell {
                     } else if imageType == "profile_image" {
                         self.profileImageView.image = UIImage(data: data)
                     }
+                    self.delegate?.updateUI()
                 }
             }.resume()
         }

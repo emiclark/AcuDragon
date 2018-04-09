@@ -27,6 +27,8 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
+# secret has the api key and channel id
+secret.swift
 
 ## Playgrounds
 timeline.xctimeline

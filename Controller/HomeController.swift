@@ -9,6 +9,7 @@
 import UIKit
 
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    let vcell = VideoCell()
     
     let menuBar: MenuBar = {
         let mb = MenuBar()
@@ -30,7 +31,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
         startActivityIndicator()
         setupViewController()
-        self.apiClient.fetchVideos2(pageNum: pageNum)
+        self.apiClient.fetchVideos(pageNum: pageNum)
     }
     
     // MARK:- Setup/Initialization Methods
@@ -109,14 +110,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         view.addConstraintsWithFormat(format: "H:|[v0]|", views: menuBar)
         view.addConstraintsWithFormat(format: "V:|[v0(50)]", views: menuBar)
     }
-    // MARK:- MenuBar Methods
-    @objc func handleSearch() {
-        print("123")
-    }
-    
-    @objc func handleMore() {
-        print("234")
-    }
     
     // MARK:- CollectionView Delegate Methods
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -129,9 +122,18 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! VideoCell
+        let videoInfo = ApiClient.videosArray.items![indexPath.row]
+//        cell.videoItem = ApiClient.videosArray.items![indexPath.row]
         
-        cell.videoItem = ApiClient.videosArray.items![indexPath.row]
+        cell.subTitleTextView.text =  videoInfo.channelTitle != nil ?  videoInfo.channelTitle : "AcuDragon Wellness System"
+        cell.subTitleTextView.text =  videoInfo.snippet?.description != nil ?  videoInfo.snippet?.description : "AcuDragon Wellness System"
         
+        apiClient.downloadImage(urlString: (videoInfo.snippet?.thumbnails?.high?.url!)!) { (thumbnailImage) in
+            cell.thumbnailImageView.image = thumbnailImage
+        }
+
+        cell.profileImageView.image = #imageLiteral(resourceName: "dragon")
+
         return cell
     }
     
@@ -148,6 +150,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
+    
+    // MARK:- MenuBar Methods
+    @objc func handleSearch() {
+        print("123")
+    }
+    
+    @objc func handleMore() {
+        print("234")
+    }
+    
 }
 
 // MARK:- Extensions
