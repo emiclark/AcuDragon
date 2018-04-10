@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Google
+//import Google
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -38,11 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.addSubview(statusBarView)
         window?.addConstraintsWithFormat(format: "H:|[v0]|", views: statusBarView)
         window?.addConstraintsWithFormat(format: "V:|[v0(30)]", views: statusBarView)
-
-        // Initialize sign-in
-        var configureError: NSError?
-        GGLContext.sharedInstance().configureWithError(&configureError)
-        assert(configureError == nil, "Error configuring Google services: \(String(describing: configureError))")
         
         return true
     }
